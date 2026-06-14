@@ -38,24 +38,20 @@ def main():
 
     #Player's turn
     while player_score < 21 :
-        #Asking if player wants to hit or stay
+        #Asking if player wants to hit or stand
         choice = input("Would you Hit or Stand reply with H or S: ").lower()
         if choice == "s":
             break
         #Draw card
         card = deal_card(deck)
         print("You drew", card)
-        #Increase score and Special case if close to 21
-        if card[0] == "A" and player_score + 10 > 21:
-            player_score += 1
-        else:
-            player_score += compute_score(card)
-        
         player_hand.append(card)
+        #Recalculate score
+        player_score = tally_score(player_hand)
         
         print("Your hand:", player_hand)
         print("Your score", player_score)
-        #Check score condition
+    #Check score condition
     if player_score > 21:
         print("BUST!!! YOU LOSE")
         print("Better luck next time")
@@ -69,21 +65,16 @@ def main():
     while dealer_score < 17:
         #Draw a card for dealer
         card = deal_card(deck)
-        print("You drew", card)
-        #Increase score and Special case if close to 17 and draw an ace
-        if card[0] == "A" and dealer_score + 10 > 17:
-            dealer_score += 1
-        else:
-            dealer_score += compute_score(card)
-        
+        print("You drew", card)    
         dealer_hand.append(card)
-        
-        print("Dealer'shand:", dealer_hand)
+        #Recalculate score
+        dealer_score = tally_score(dealer_hand)
+        print("Dealer's hand:", dealer_hand)
         print("Dealer's score", dealer_score)
-        if dealer_score > 21:
-            print("Dealer's bust You win!!!")
-            return None
-        sleep(5)
+    if dealer_score > 21:
+        print("Dealer's bust You win!!!")
+        return None
+    sleep(4)
     
     print("------Final results-----")
     print("Your score:", player_score)
@@ -100,20 +91,24 @@ def main():
     
 
 def tally_score(hand):
-    """Computes the total of a hand"""
-    total = 0
-    for i in hand:
-        total+= compute_score(i)
-    return total
+    """Computes the score of a hand"""
+    score = 0
+    for card in hand:
+        score += compute_score(card)
+
+    for card in hand:
+        if score > 21 and card.startswith("A"):
+            score = score - 11 + 1
+    return score
 
 def compute_score(card):
-    """Compute the score based on what the card is"""
-    if card[0] == "A":
-        return 10
-    elif card[0] in ["1", "J", "K", "Q"]:
+    """Computes the value of a card"""
+    if card[:-2] == "A":
+        return 11
+    elif card[:-2] in ["10", "J", "K", "Q"]:
         return 10
     else:
-        return int(card[0])
+        return int(card[:-2])
             
 
 def deal_card(deck):
