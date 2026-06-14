@@ -53,19 +53,19 @@ def main():
         print("Your score", player_score)
     #Check score condition
     if player_score > 21:
-        print("BUST!!! YOU LOSE")
-        print("Better luck next time")
+        print("BUST!!! YOU LOSE 😜")
+        print("Better luck next time 💪")
         return None
     print()
 
     #Dealer's turn
     print("Dealer's hand: ", dealer_hand)
     print("Dealer's score: ", dealer_score)
-    sleep(3)
+    sleep(2.5)
     while dealer_score < 17:
         #Draw a card for dealer
         card = deal_card(deck)
-        print("You drew", card)    
+        print("Dealer drew", card)    
         dealer_hand.append(card)
         #Recalculate score
         dealer_score = tally_score(dealer_hand)
@@ -74,16 +74,16 @@ def main():
     if dealer_score > 21:
         print("Dealer's bust You win!!!")
         return None
-    sleep(4)
+    sleep(2.5)
     
     print("------Final results-----")
     print("Your score:", player_score)
     print("Dealer's score:", dealer_score)
     if player_score > dealer_score:
-        print("You win!!!")
+        print("You win!!! 🎉")
     elif player_score < dealer_score:
-        print("You lose, better luck next time")
-    else: print("It's a draw try again to win")
+        print("You lose, better luck next time 😢")
+    else: print("It's a draw try again to win 🤝")
 
     return None
 
